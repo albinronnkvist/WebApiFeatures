@@ -1,9 +1,9 @@
 ﻿using WebApiCaching.Entities;
 
-namespace WebApiCaching.Repositories;
+namespace WebApiCaching.Repositories.ArticleRepository;
 
 public interface IArticleRepository
 {
     Task<IEnumerable<Article>> GetAllAsync();
-    Task<Article?> GetSingleAsync(Guid id);
+    Task<Article?> GetSingleAsync(long id);
 }

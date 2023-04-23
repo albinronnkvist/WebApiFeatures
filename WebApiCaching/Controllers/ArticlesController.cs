@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using WebApiCaching.Repositories;
+using WebApiCaching.Repositories.ArticleRepository;
 
 namespace WebApiCaching.Controllers;
 
@@ -23,7 +24,7 @@ public class ArticlesController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetSingle([FromRoute] Guid id)
+    public async Task<IActionResult> GetSingle([FromRoute] long id)
     {
         var article = await _articleRepository.GetSingleAsync(id);
         if (article is null)

@@ -1,5 +1,6 @@
 using Microsoft.Extensions.Caching.Memory;
 using WebApiCaching.Repositories;
+using WebApiCaching.Repositories.ArticleRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 

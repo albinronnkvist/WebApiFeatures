@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Caching.Memory;
 using WebApiCaching.Entities;
 
-namespace WebApiCaching.Repositories;
+namespace WebApiCaching.Repositories.ArticleRepository;
 
 public class ArticleRepositoryMemoryCacheDecorator : IArticleRepository
 {
@@ -19,7 +19,7 @@ public class ArticleRepositoryMemoryCacheDecorator : IArticleRepository
         return await _innerArticleRepository.GetAllAsync();
     }
 
-    public async Task<Article?> GetSingleAsync(Guid id)
+    public async Task<Article?> GetSingleAsync(long id)
     {
         if (_cache.TryGetValue<Article?>(id, out var cachedArticle))
         {
