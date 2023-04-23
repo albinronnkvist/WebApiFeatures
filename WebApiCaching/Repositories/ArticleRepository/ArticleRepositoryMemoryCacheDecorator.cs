@@ -21,7 +21,8 @@ public class ArticleRepositoryMemoryCacheDecorator : IArticleRepository
 
     public async Task<Article?> GetSingleAsync(long id)
     {
-        if (_cache.TryGetValue<Article?>(id, out var cachedArticle))
+        var key = $"{nameof(Article)}-{id}";
+        if (_cache.TryGetValue<Article?>(key, out var cachedArticle))
         {
             return cachedArticle;
         }
@@ -29,7 +30,7 @@ public class ArticleRepositoryMemoryCacheDecorator : IArticleRepository
         var article = await _innerArticleRepository.GetSingleAsync(id);
         if (article is not null)
         {
-            _cache.Set(id, article, TimeSpan.FromMinutes(10));
+            _cache.Set(key, article, TimeSpan.FromMinutes(10));
         }
 
         return article;

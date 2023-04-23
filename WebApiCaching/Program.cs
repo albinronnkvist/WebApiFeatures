@@ -1,6 +1,7 @@
+using Microsoft.Extensions.Caching.Distributed;
 using Microsoft.Extensions.Caching.Memory;
-using WebApiCaching.Repositories;
 using WebApiCaching.Repositories.ArticleRepository;
+using WebApiCaching.Repositories.AuthorRepository;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -9,11 +10,19 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
 builder.Services.AddMemoryCache();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
 
 // Alternative #1 (Using Scrutor)
 builder.Services.AddScoped<IArticleRepository, ArticleRepositoryMock>();
 builder.Services.Decorate<IArticleRepository>((inner, provider) => 
     new ArticleRepositoryMemoryCacheDecorator(inner, provider.GetRequiredService<IMemoryCache>()));
+
+builder.Services.AddScoped<IAuthorRepository, AuthorRepositoryMock>();
+builder.Services.Decorate<IAuthorRepository>((inner, provider) =>
+    new AuthorRepositoryRedisCacheDecorator(inner, provider.GetRequiredService<IDistributedCache>()));
 
 // Alternative #2
 //builder.Services.AddScoped<IArticleRepository>(serviceProvider =>
