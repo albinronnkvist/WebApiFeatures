@@ -4,12 +4,12 @@ using WebApiCaching.Repositories;
 namespace WebApiCaching.Controllers;
 
 [ApiController]
-[Route("api/news")]
-public class NewsController : ControllerBase
+[Route("api/articles")]
+public class ArticlesController : ControllerBase
 {
     private readonly IArticleRepository _articleRepository;
 
-    public NewsController(IArticleRepository articleRepository)
+    public ArticlesController(IArticleRepository articleRepository)
     {
         _articleRepository = articleRepository;
     }
@@ -23,7 +23,7 @@ public class NewsController : ControllerBase
     }
 
     [HttpGet("{id}")]
-    public async Task<IActionResult> GetArticle([FromRoute] Guid id)
+    public async Task<IActionResult> GetSingle([FromRoute] Guid id)
     {
         var article = await _articleRepository.GetSingleAsync(id);
         if (article is null)
